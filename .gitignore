@@ -1,0 +1,7 @@
+metals.sbt
+target/
+node_modules/
+GITHUB_TOKEN
+.bloop/
+.bsp/
+.metals/

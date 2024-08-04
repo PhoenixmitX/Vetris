@@ -1,0 +1,21 @@
+{
+  "name": "test-vite",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"sbt ~fastLinkJS\" \"vite --host\"",
+    "build": "vite build",
+    "del": "bun run build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@scala-js/vite-plugin-scalajs": "^1.0.0",
+    "concurrently": "^8.2.2",
+    "typescript": "5.4.5",
+    "vite": "^5.3.5"
+  },
+  "dependencies": {
+    "signal-polyfill": "^0.1.2"
+  }
+}
