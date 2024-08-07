@@ -23,9 +23,6 @@ export default defineConfig({
         moduleSideEffects: "no-external",
       },
     },
-		watch: {
-			include: ["modules/app/target/scala-3.4.2/vetris-app-fastopt/**/*"],
-		}
   },
   plugins: [
     scalaJSPlugin({

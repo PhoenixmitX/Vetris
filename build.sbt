@@ -13,11 +13,29 @@ ThisBuild / scalacOptions ++= Seq("-encoding", "utf-8", "-deprecation", "-featur
 val PekkoVersion = "1.0.2"
 val BorerVersion = "1.14.0"
 val ScalaJsDomVersion = "2.8.0"
-val DuckTapeVersion = "0.0.4"
+val DuckTapeVersion = "0.0.5"
 
 ThisBuild / resolvers += "ApiDuck GitHub Package Registry" at "https://maven.pkg.github.com/phoenixmitx/apiduck"
 val GITHUB_TOKEN = sys.env.get("GITHUB_TOKEN").orElse(Try(fromFile("GITHUB_TOKEN").getLines.next).toOption).getOrElse(throw new RuntimeException("GITHUB_TOKEN not found\nPlease set GITHUB_TOKEN environment variable or create a file named GITHUB_TOKEN with the token as the first line"))
 ThisBuild / credentials += Credentials("GitHub Package Registry", "maven.pkg.github.com", "phoenixmitx", GITHUB_TOKEN)
+
+lazy val ducktape = crossProject(JSPlatform, JVMPlatform)
+	.crossType(CrossType.Full)
+	.withoutSuffixFor(JVMPlatform)
+	.in(file("modules/dt-core"))
+	.settings(
+		name := "ducktape",
+	)
+	.jsConfigure(
+		_.enablePlugins(ScalablyTypedConverterExternalNpmPlugin)
+	)
+	.jsSettings(
+		stUseScalaJsDom := true,
+		libraryDependencies += "org.scala-js" %%% "scalajs-dom" % ScalaJsDomVersion,
+
+		// Tell ScalablyTyped that we manage `bun install` ourselves
+		externalNpm := baseDirectory.value / "../../../",
+	)
 
 lazy val core: CrossProject = crossProject(JSPlatform, JVMPlatform)
   .crossType(CrossType.Full)
@@ -59,7 +77,7 @@ lazy val app: Project = project
         // generates smaller bundles if we keep avoidLetsAndConsts on
         // .withAvoidLetsAndConsts(false)
       )
-      // small modules are counterproductive
+      // small modules are counterproductive for bundling
       .withModuleSplitStyle(ModuleSplitStyle.SmallModulesFor(List("de.phoenixmitx")))
     },
   )

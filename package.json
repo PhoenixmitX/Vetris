@@ -7,7 +7,7 @@
     "dev": "concurrently \"sbt ~fastLinkJS\" \"vite --host\"",
     "build": "vite build",
     "del": "bun run build",
-    "preview": "vite preview"
+    "preview": "vite --host"
   },
   "devDependencies": {
     "@scala-js/vite-plugin-scalajs": "^1.0.0",
